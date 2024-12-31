@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.news-item img {
+  width: 150px; /* Set the desired width */
+  height: 170px; /* Set the desired height */
+  object-fit: cover; /* Ensures the image fits nicely without distortion */
+}
