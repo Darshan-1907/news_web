@@ -25,16 +25,9 @@ class News extends Component {
     let data = await fetch(url);
     let parsedData = await data.json();
 
-    // Simulate pagination as the API doesn't support it directly
-    const totalResults = parsedData.articles.length;
-    const paginatedArticles = parsedData.articles.slice(
-      (page - 1) * pageSize,
-      page * pageSize
-    );
-
     this.setState({
-      articles: paginatedArticles,
-      totalResults: totalResults,
+      articles: parsedData.articles,
+      totalResults: parsedData.totalResults,
       loading: false,
     });
   };
@@ -58,19 +51,43 @@ class News extends Component {
 
     return (
       <div className="container my-3">
-        <center><h1 className="text-center">News 24/7 - Top Headlines</h1></center>
+        <center>
+          <h1 className="text-center">News 24/7 - Top Headlines</h1>
+        </center>
         {loading && <h3 className="text-center">Loading...</h3>}
         <div className="row">
           {!loading &&
             articles.map((element) => (
               <div className="col-md-4" key={element.url}>
-                <NewsItem Title={element.title ? element.title.slice(0, 50) : "No Title"}Description={element.description? element.description.slice(0, 90): "No Description"}imageUrl={element.urlToImage || "https://via.placeholder.com/150"}newsurl={element.url}/>
+                <NewsItem
+                  Title={element.title ? element.title.slice(0, 52) : "No Title"}
+                  Description={
+                    element.description
+                      ? element.description.slice(0, 70)
+                      : "No Description"
+                  }
+                  imageUrl={element.urlToImage}
+                  newsurl={element.url}
+                  className="news-item"
+                />
               </div>
             ))}
         </div>
         <div className="container d-flex justify-content-between mt-3">
-          <button disabled={page <= 1}className="btn btn-primary btn-dark"onClick={this.handlePrevClick}>&larr; Previous </button>
-          <button disabled={page * pageSize >= totalResults} className="btn btn-secondary btn-dark" onClick={this.handleNextClick}> Next &rarr; </button>
+          <button
+            disabled={page <= 1}
+            className="btn btn-primary btn-dark"
+            onClick={this.handlePrevClick}
+          >
+            &larr; Previous
+          </button>
+          <button
+            disabled={page * pageSize >= totalResults}
+            className="btn btn-secondary btn-dark"
+            onClick={this.handleNextClick}
+          >
+            Next &rarr;
+          </button>
         </div>
       </div>
     );
